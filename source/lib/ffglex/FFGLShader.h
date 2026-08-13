@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <string>
+#include <unordered_map>
 
 namespace ffglex
 {
@@ -47,6 +48,7 @@ private:
 	GLuint fragmentShaderID;                             //!< The ID OpenGL gave our fragment shader. 0 for invalid.
 	GLuint programID;                                    //!< The ID OpenGL gave our shader program. Bind this to use this shader. 0 for invalid.
 	std::vector< std::string > transformFeedbackVaryings;//!< The varyings that will be captured using a transform feedback. Ordered in the order of capturing.
+	mutable std::unordered_map< std::string, GLint > uniformLocations;//!< Cache of uniform name -> location for the currently linked programID, populated lazily by FindUniform.
 };
 
 }//End namespace ffglex

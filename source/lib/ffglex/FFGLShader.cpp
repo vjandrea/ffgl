@@ -179,6 +179,8 @@ void FFGLShader::FreeGLResources()
 		glDeleteProgram( programID );
 		programID = 0;
 	}
+
+	uniformLocations.clear();
 }
 
 void FFGLShader::Set( const char* name, float value )
@@ -229,7 +231,13 @@ GLuint FFGLShader::GetGLID() const
  */
 GLint FFGLShader::FindUniform( const char* name ) const
 {
-	return glGetUniformLocation( programID, name );
+	auto it = uniformLocations.find( name );
+	if( it != uniformLocations.end() )
+		return it->second;
+
+	GLint location = glGetUniformLocation( programID, name );
+	uniformLocations[ name ] = location;
+	return location;
 }
 
 bool FFGLShader::CompileVertexShader( const char* vertexShader )
@@ -318,6 +326,9 @@ bool FFGLShader::CompileFragmentShader( const char* fragmentShader )
 }
 bool FFGLShader::LinkProgram()
 {
+	//Any cached uniform locations belong to the program we're about to replace, so they're no longer valid.
+	uniformLocations.clear();
+
 	programID = glCreateProgram();
 
 	glAttachShader( programID, vertexShaderID );
