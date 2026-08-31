@@ -86,7 +86,7 @@ endif()
 # should we build the example plugins? we do this by default
 # if building the project directly, but not when adding ffgl
 # to another project
-option(FFGL_BUILD_EXAMPLE_PLUGINS ${FFGL_MASTER_PROJECT} "Build the example FFGL plugins")
+option(FFGL_BUILD_EXAMPLE_PLUGINS "Build the example FFGL plugins" ${FFGL_MASTER_PROJECT})
 
 if (${FFGL_BUILD_EXAMPLE_PLUGINS})
     add_subdirectory(source/plugins)
